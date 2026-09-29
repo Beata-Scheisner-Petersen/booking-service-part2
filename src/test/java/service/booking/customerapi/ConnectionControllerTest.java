@@ -36,7 +36,7 @@ class ConnectionControllerTest {
                         {
                             "firstname": "test",
                             "lastname": "testLast",
-                            "identificationNumber": "19900101-1234"
+                            "identificationNumber": "19900101-1234",
                             "email": "test@test.com",
                             "password": "ASD123asd!",
                             "phoneNumber": "070-1234567"
