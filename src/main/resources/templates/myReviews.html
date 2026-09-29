@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Black Cat Retirement</title>
+
+    <!-- css/Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/my_reservation.css}"/> <!--todo make new css for myReviews -->
+    <link th:href="@{/vendor/bootstrap.min.css}" rel="stylesheet"/>
+
+    <!-- scripts -->
+    <script defer th:src="@{/javascript/my_reviews.js}"></script> <!--todo make new script for myReviews -->
+    <!-- header block -->
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
+
+</head>
+<body>
+<h1 class="my_review_title">My Reviews</h1>
+
+<div class="table-wrapper">
+    <table id="reviewTable" class="table">
+        <thead>
+        <tr id="my_review_table">
+            <th>Room</th>
+            <th>Review Content</th>
+            <th>Review Score</th>
+            <th>Made At</th>
+        </tr>
+        </thead>
+        <tbody id="table_body">
+        <!-- Js script -->
+        </tbody>
+    </table>
+</div>
+
+<div id="errorPopup" class="popup-overlay">
+    <div class="popup-box">
+        <h3>Unable to update review</h3>
+
+        <div class="popup-buttons">
+            <button id="closeErrorPopup" class="popup-btn cancel">Close</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

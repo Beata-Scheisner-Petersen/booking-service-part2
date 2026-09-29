@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: #Resource Name
+  name: customer-db
+spec:
+  replicas: 1 #How many Copies that exists
+  selector:
+    matchLabels:
+      app: customer-db
+  template: #How the POD should look/be setup
+    metadata:
+      labels:
+        app: customer-db
+    spec:
+      containers:
+        - name: mysql #Container name
+          image: mysql:8 #what MySQL image to use
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-secrets
+                  key: CUSTOMER_DB_NAME
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-secrets
+                  key: CUSTOMER_DB_ROOT_PASSWORD
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-secrets
+                  key: CUSTOMER_DB_USERNAME
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-secrets
+                  key: CUSTOMER_DB_PASSWORD
+          ports:
+            - containerPort: 3306
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer-db
+spec:
+  selector:
+    app: customer-db
+  ports:
+    - port: 3306
+      targetPort: 3306

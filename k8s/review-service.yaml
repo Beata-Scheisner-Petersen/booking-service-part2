@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: #Resource Name
+  name: review-service
+spec:
+  replicas: 1 #How many Copies that exists
+  selector:
+    matchLabels:
+      app: review-service
+  template: #How the POD should look/be setup
+    metadata:
+      labels:
+        app: review-service
+    spec:
+      containers:
+        - name: review-service #Container name
+          image: sleepingfores7s/booking-review:latest #what Program image to use
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8083
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-secrets
+                  key: JWT_SECRET
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-secrets
+                  key: REVIEW_DB_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-secrets
+                  key: REVIEW_DB_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-secrets
+                  key: REVIEW_DB_PASSWORD
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: review-service
+spec:
+  type: LoadBalancer #Makes the program reachable from outside kubernetes (Port Forwarded ISH)
+  selector:
+    app: review-service
+  ports:
+    - port: 8083
+      targetPort: 8083

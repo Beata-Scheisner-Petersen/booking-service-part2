@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Black Cat Retirement</title>
+
+    <!-- css/Bootstrap -->
+    <link th:href="@{/vendor/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/interaction_button.css}">
+    <!-- scripts -->
+    <script defer th:src="@{/javascript/delete_account.js}"></script>
+    <!-- header block -->
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
+
+</head>
+<body>
+
+<div class="d-flex m-5 align-content-center justify-content-center">
+    <div>
+        <h3>Delete Account?</h3>
+
+        <h5>Are you sure?</h5>
+        <div>
+            <label class="form-label"></label>
+            <div id="error_message" class="text-danger small"></div>
+        </div>
+            <button onclick="deleteYes()" class="rounded-3 shadow interaction-button">YES</button>
+            <button onclick="deleteNo()" class="rounded-3 shadow interaction-button">NO</button>
+    </div>
+</div>
+
+</body>
+</html>

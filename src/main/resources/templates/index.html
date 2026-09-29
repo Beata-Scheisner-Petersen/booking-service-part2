@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Black Cat Retirement</title>
+
+    <!-- css/Bootstrap -->
+    <link th:href="@{/vendor/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/interaction_button.css}">
+    <!-- scripts -->
+    <!-- header block -->
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
+
+</head>
+<body>
+<div
+        class="d-flex flex-row m-5 align-content-center justify-content-center"
+>
+    <div class="flex-grow-1 me-4">
+        <h3>Welcome to The Black Cat Retirement Home</h3>
+        <p>
+            The obvious choice for all monster children who feel their old parents
+            are getting… well, a
+            <br/>
+            little too old to climb out of coffins, chase full moons, or brew
+            curses without forgetting
+            <br/>
+            the ingredients. Here we offer safe and cozy support for elderly
+            monsters of every kind, whether they are:
+        </p>
+        <ul>
+            <li>Mummies who need help keeping their bandages fresh</li>
+            <li>Vampires who forget where they left their coffin</li>
+            <li>
+                Witches who accidentally turn themselves into cats a little too
+                often
+            </li>
+            <li>Zombies who get lost on the way to the dining hall</li>
+            <li>Werewolves who would rather play bingo than howl at the moon</li>
+        </ul>
+
+        <h4>
+            At The Black Cat Retirement Home, your old monster parents enjoy:
+        </h4>
+
+        <ul>
+            <li>Soft coffins with ergonomic lids</li>
+            <li>Nightly walks in a safely fenced forest</li>
+            <li>Blood pudding every Thursday</li>
+            <li>Quiet hours during the full moon</li>
+            <li>The Cat’s own “purr therapy” for stressed undead</li>
+        </ul>
+        <p>
+            So relax, dear monster child. We’ll take care of your parents —
+            whether they’re dusty, undead, enchanted, or just delightfully
+            decrepit.
+            <br/><br/>
+            At The Black Cat, everyone is welcome… as long as they’re not afraid
+            of a little darkness.
+        </p>
+        <button class="ms-auto rounded-3 shadow interaction-button" id="booking_button"
+                onclick=window.location.href='/reservation'>
+            Book Room
+        </button>
+    </div>
+    <img
+            class="img-fluid flex-shrink-0"
+            style="min-width: 150px; max-width: 300px; object-fit: contain"
+            th:src="@{/images/Black_Cat_Retirement_Home_Entrance.png}"
+            alt="Black_Cat_Retirement_Home"
+    />
+</div>
+</body>
+</html>

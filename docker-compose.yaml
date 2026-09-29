@@ -1,0 +1,108 @@
+services:
+
+  booking-mysql:
+    image: mysql:8.0
+    container_name: booking-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: Booking-service
+      MYSQL_ROOT_PASSWORD: ${BOOKING_DB_ROOT_PASS}
+      MYSQL_USER: ${BOOKING_DB_USER}
+      MYSQL_PASSWORD: ${BOOKING_DB_PASS}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-P", "3306", "--protocol=tcp"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - booking_mysql_data:/var/lib/mysql
+
+  booking-service:
+    image: beatasp/booking-image:latest
+    container_name: booking-service
+    ports:
+      - "8082:8082"
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_DATASOURCE_URL: jdbc:mysql://booking-mysql:3306/Booking-service
+      SPRING_DATASOURCE_USERNAME: ${BOOKING_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${BOOKING_DB_PASS}
+    depends_on:
+      booking-mysql:
+        condition: service_healthy
+
+#-----------------------------------------------------------------
+
+  customer-mysql:
+    image: mysql:8.0
+    container_name: customer-db
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: Customer-service
+      MYSQL_ROOT_PASSWORD: ${CUSTOMER_DB_ROOT_PASS}
+      MYSQL_USER: ${CUSTOMER_DB_USER}
+      MYSQL_PASSWORD: ${CUSTOMER_DB_PASS}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-P", "3306", "--protocol=tcp"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - customer_mysql_data:/var/lib/mysql
+
+  customer-service:
+    image: beatasp/booking-system-customer:latest
+    container_name: customer-service
+    ports:
+      - "8081:8081"
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_DATASOURCE_URL: jdbc:mysql://customer-mysql:3306/Customer-service
+      SPRING_DATASOURCE_USERNAME: ${CUSTOMER_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${CUSTOMER_DB_PASS}
+    depends_on:
+      customer-mysql:
+        condition: service_healthy
+
+#-----------------------------------------------------------------
+
+  review-db:
+    image: mysql:8.0
+    container_name: review-db
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_DATABASE: Review-service
+      MYSQL_ROOT_PASSWORD: ${REVIEW_DB_ROOT_PASS}
+      MYSQL_USER: ${REVIEW_DB_USER}
+      MYSQL_PASSWORD: ${REVIEW_DB_PASS}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-P", "3306", "--protocol=tcp"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - review_mysql_data:/var/lib/mysql
+
+  review-service:
+    image: beatasp/review-service:latest
+    container_name: review-service
+    ports:
+      - "8083:8083"
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_DATASOURCE_URL: jdbc:mysql://review-db:3306/Review-service
+      SPRING_DATASOURCE_USERNAME: ${REVIEW_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${REVIEW_DB_PASS}
+    depends_on:
+      review-db:
+        condition: service_healthy
+
+#-----------------------------------------------------------------
+
+volumes:
+  booking_mysql_data:
+  customer_mysql_data:
+  review_mysql_data:

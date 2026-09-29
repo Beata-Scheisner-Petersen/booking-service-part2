@@ -1,0 +1,15 @@
+.interaction-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #231477;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.interaction-button:hover {
+    background-color: rgb(9, 11, 94);
+}

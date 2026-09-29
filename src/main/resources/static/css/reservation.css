@@ -1,0 +1,30 @@
+.bg-light {
+    background-image: url('/images/Black_Cat_Hotel_Reception.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
+.room-image {
+    height: 120px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.room-card {
+    margin-bottom: 20px;
+    border: none;
+}
+
+.container .card {
+    margin-bottom: 20px;
+}
+
+.container .card .get-available-rooms {
+    display: flex;
+    justify-content: center;
+}
+
+.container #roomsGrid img {
+    height: auto;
+}

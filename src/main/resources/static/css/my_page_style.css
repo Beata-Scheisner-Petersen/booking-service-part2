@@ -1,0 +1,15 @@
+.content {
+    margin: 40px;          /* luft runt hela innehållet */
+    padding: 20px;         /* extra luft inuti boxen */
+    max-width: 800px;      /* gör texten lättare att läsa */
+}
+.content h1 {
+    margin-bottom: 20px;
+}
+
+.content p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+

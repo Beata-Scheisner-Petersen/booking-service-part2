@@ -1,0 +1,22 @@
+.update-page {
+    margin: 40px auto;
+    max-width: 600px;
+}
+
+.update-page form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+}
+
+.update-page label {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.update-page input {
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}

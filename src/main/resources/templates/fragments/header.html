@@ -1,0 +1,21 @@
+<th:block th:fragment="header">
+
+<!--  Links to display  -->
+    <script th:inline="javascript">
+        const thymeleafUrls = {
+            home: [[@{/}]],
+            booking: [[@{/reservation}]],
+            login: [[@{/login}]],
+            register: [[@{/register}]],
+            mypage: [[@{/mypage}]],
+            logo: [[@{/images/Black_Cat_Retirement_Home_Logo.png}]],
+            logout: [[@{/logout}]]
+        };
+    </script>
+
+<!--  Header Creation Script  -->
+    <script th:src="@{/javascript/create_header.js}"></script>
+
+<!--  Header CSS  -->
+    <link rel="stylesheet" th:href="@{/css/side_menu_style.css}"/>
+</th:block>
