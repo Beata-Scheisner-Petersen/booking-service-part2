@@ -1,12 +1,6 @@
 ## Vad gör ändringen?
 
-- Lägger till stöd för att skapa, visa, uppdatera och avboka hotellbokningar.
-- Validerar bokningsdatum och antal gäster.
-- Förbättrar felhanteringen med tydliga svar från API:et.
-
 ## Varför?
-
-För att kunder ska kunna hantera sina bokningar och få tydlig återkoppling när något går fel. Valideringen förhindrar att ogiltiga bokningsuppgifter sparas i databasen.
 
 ## Hur har du testat?
 
