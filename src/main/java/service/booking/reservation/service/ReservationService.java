@@ -37,19 +37,6 @@ public class ReservationService {
         this.customerClient = customerClient;
     }
 
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
-    }
-
-
-    public List<Reservation> getActiveReservationByCustomerId(Long customerId) {
-
-        return reservationRepository.findByCustomerIdAndStatus(
-                customerId,
-                ReservationStatus.ACTIVE
-        );
-    }
-
     public List<GetAllCustomerReservationsDto> getAllReservationByCustomerId(Long customerId) {
 
         return reservationRepository.findAllByCustomerId(customerId)
