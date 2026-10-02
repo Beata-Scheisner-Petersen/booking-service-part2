@@ -25,6 +25,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/health").permitAll()
                         // Public GET endpoint for available rooms
                         //Reservation
                         .requestMatchers(HttpMethod.GET, "/api/reservation").permitAll()
