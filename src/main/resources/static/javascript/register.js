@@ -60,9 +60,7 @@ async function registerCustomer() {
             document.getElementById("result_message").innerText = data;
             return;
         }
-    }
-
-    else if (response.status === 409) {
+    } else if (response.status === 409) {
 
         const errorMessage = typeof data === "object" ? (data.message || JSON.stringify(data)) : data;
 
@@ -76,14 +74,10 @@ async function registerCustomer() {
             document.getElementById("result_message").innerText = data;
         }
         return;
-    }
-
-    else if (response.status === 503) {
+    } else if (response.status === 503) {
         document.getElementById("result_message").innerText = "The server is temporarily down. Please try again later.";
         return;
-    }
-
-    if (!response.ok) {
+    } else if (!response.ok) {
         console.log("!response.ok")
         document.getElementById("result_message").innerText = data.error || "Unexpected error occur";
         return;
