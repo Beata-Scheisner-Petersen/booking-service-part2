@@ -3,7 +3,6 @@ package service.booking.reservation.service;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import service.booking.customerapi.client.CustomerClient;
-import service.booking.customerapi.client.CustomerClient;
 import service.booking.exceptionhandler.customexeptions.ForbiddenException;
 import service.booking.exceptionhandler.customexeptions.NotFoundException;
 import service.booking.reservation.model.CreateReservationRequest;
