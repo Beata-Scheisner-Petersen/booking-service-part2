@@ -1,5 +1,7 @@
 package service.booking.exceptionhandler;
 
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import service.booking.exceptionhandler.customexeptions.*;
 
 import org.springframework.http.HttpStatus;
@@ -103,6 +105,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(HttpClientErrorException.class)
+    public ResponseEntity<String> handleHttpClientError(HttpClientErrorException e) {
+        return ResponseEntity
+                .status(e.getStatusCode())
+                .body(e.getResponseBodyAsString());
+    }
+
+    @ExceptionHandler(ResourceAccessException.class)
+    public ResponseEntity<String> handleResourceAccess(ResourceAccessException e) {
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(e.getMessage());
     }
 
 }
