@@ -45,43 +45,41 @@ async function registerCustomer() {
         return;
     }
 
-    //Validation errors
+    //Validation errors (400)
     if (response.status === 400) {
         if (typeof data === "object") {
             for (const field in data) {
-                console.log("for-loop")
                 const errorDiv = document.getElementById(`${field}_error`);
                 if (errorDiv) {
                     errorDiv.innerHTML = data[field];
-                    console.log("errorDiv: ", errorDiv.innerHTML = data[field])
                 }
             }
             return;
-
         } else {
-            if (data.match("Email")) {
-                document.getElementById("email_error").innerText = data;
-            } else if (data.match("Identification")) {
-                document.getElementById("identificationNumber_error").innerText = data;
-            } else if (data.match("Phone")) {
-                document.getElementById("phoneNumber_error").innerText = data;
-            } else {
-                document.getElementById("result_message").innerText = data;
-            }
-
+            //handle text 400 errors
+            document.getElementById("result_message").innerText = data;
             return;
         }
+    } else if (response.status === 409) {
 
+        const errorMessage = typeof data === "object" ? (data.message || JSON.stringify(data)) : data;
+
+        if (errorMessage.includes("Email")) {
+            document.getElementById("email_error").innerText = data;
+        } else if (errorMessage.includes("Identification")) {
+            document.getElementById("identificationNumber_error").innerText = data;
+        } else if (errorMessage.includes("Phone")) {
+            document.getElementById("phoneNumber_error").innerText = data;
+        } else {
+            document.getElementById("result_message").innerText = data;
+        }
+        return;
     } else if (response.status === 503) {
         document.getElementById("result_message").innerText = "The server is temporarily down. Please try again later.";
         return;
-    }
-
-    if (!response.ok) {
+    } else if (!response.ok) {
         console.log("!response.ok")
         document.getElementById("result_message").innerText = data.error || "Unexpected error occur";
         return;
     }
-    console.log("sista")
-    document.getElementById("result_message").innerText = data.message || "failed to register";
 }
