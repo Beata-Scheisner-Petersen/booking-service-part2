@@ -1,10 +1,12 @@
 package service.booking.roomapi.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import service.booking.roomapi.dto.RoomResponseDto;
 import service.booking.roomapi.dto.UpdateRoomDto;
 import service.booking.roomapi.entity.Room;
 import service.booking.roomapi.repository.RoomRepository;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class RoomService {
 
     private final RoomRepository repository;
+    final Logger logger = LoggerFactory.getLogger(RoomService.class);
 
     public RoomService(RoomRepository repository) {
         this.repository = repository;
@@ -29,11 +32,13 @@ public class RoomService {
         Optional<Room> optionalRoom = repository.findById(id);
 
         if (optionalRoom.isEmpty()) {
+            logger.error("Room with id: {}, was not found in getRoomById", id);
             return null;
         }
 
         Room room = optionalRoom.get();
 
+        logger.info("getting room with id: {}", id);
         return new RoomResponseDto(
                 room.getId(),
                 room.getRoomNumber(),
@@ -42,7 +47,6 @@ public class RoomService {
                 room.getMaxGuests(),
                 room.isExtraBedAvailable()
         );
-
     }
 
     public RoomResponseDto addRoom(int roomNumber,
@@ -62,6 +66,7 @@ public class RoomService {
                     )
             );
 
+            logger.info("New room with id {} is added.", returnedRoom.getId());
             return new RoomResponseDto(
                     returnedRoom.getId(),
                     returnedRoom.getRoomNumber(),
@@ -72,6 +77,7 @@ public class RoomService {
 
             );
         } catch (Exception e) {
+            logger.error("Error in adding a new room occurred: \n{}", e.getCause().toString());
             return null;
         }
     }
@@ -81,6 +87,7 @@ public class RoomService {
         Optional<Room> optionalRoom = repository.findById(id);
 
         if (optionalRoom.isEmpty()) {
+            logger.error("Room with id: {}, was not found in updateRoom", id);
             return null;
         }
 
@@ -94,6 +101,7 @@ public class RoomService {
 
         try {
             Room resultRoom = repository.save(fetchedRoom);
+            logger.info("Room with id {} is updated", id);
 
             return new RoomResponseDto(
                     resultRoom.getId(),
@@ -103,6 +111,7 @@ public class RoomService {
                     resultRoom.getMaxGuests(),
                     resultRoom.isExtraBedAvailable());
         } catch (Exception e) {
+            logger.error("Error in update a room occurred: \n{}", e.getCause().toString());
             return null;
         }
     }
@@ -111,9 +120,11 @@ public class RoomService {
         Optional<Room> optionalRoom = repository.findById(id);
 
         if (optionalRoom.isEmpty()) {
+            logger.error("Room with id: {}, was not found in deleteRoom", id);
             return false;
         }
 
+        logger.info("Room with id {} is deleted", id);
         repository.deleteById(id);
         return true;
     }
