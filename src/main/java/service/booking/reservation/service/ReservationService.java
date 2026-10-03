@@ -1,6 +1,8 @@
 package service.booking.reservation.service;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import service.booking.customerapi.client.CustomerClient;
 import service.booking.exceptionhandler.customexeptions.ForbiddenException;
@@ -24,6 +26,7 @@ import static service.booking.reservation.utils.Validations.validateDateRange;
 
 @Service
 public class ReservationService {
+    final Logger logger = LoggerFactory.getLogger(ReservationService.class);
 
     private final ReservationRepository reservationRepository;
     private final RoomRepository roomRepository;
@@ -37,21 +40,9 @@ public class ReservationService {
         this.customerClient = customerClient;
     }
 
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
-    }
-
-
-    public List<Reservation> getActiveReservationByCustomerId(Long customerId) {
-
-        return reservationRepository.findByCustomerIdAndStatus(
-                customerId,
-                ReservationStatus.ACTIVE
-        );
-    }
-
     public List<GetAllCustomerReservationsDto> getAllReservationByCustomerId(Long customerId) {
 
+        logger.info("get all reservation that customer with id {} have", customerId);
         return reservationRepository.findAllByCustomerId(customerId)
                 .stream()
                 .sorted(Comparator.comparing(
@@ -74,13 +65,17 @@ public class ReservationService {
     public Reservation createReservation(CreateReservationRequest request, String jwt) {
 
         if (!customerClient.customerExists(jwt)){
+            logger.error("Customer with id {} not found then creating reservation", request.getCustomerId());
             throw new NotFoundException("Customer not found");
         }
 
         Room room = roomRepository
                 .findById(request.getRoomId())
                 .orElseThrow(
-                        () -> new NotFoundException("Rummet finns inte")
+                        () -> {
+                            logger.error("Room with number {} does not exist", request.getRoomId());
+                             return new NotFoundException("The room does not exist.");
+                        }
                 );
 
         validateDateRange(
@@ -115,6 +110,7 @@ public class ReservationService {
                 request.getGuests()
         );
 
+        logger.info("Reservation is created");
         return reservationRepository.save(reservation);
     }
 
@@ -132,6 +128,7 @@ public class ReservationService {
         );
 
         if (bookingToIgnore != null) {
+            logger.warn("bookingToIgnore is not null");
             bookings = bookings.stream()
                     .filter(
                             b -> !b.getId().equals(bookingToIgnore)
@@ -139,6 +136,7 @@ public class ReservationService {
             ;
         }
         if (!bookings.isEmpty()) {
+            logger.error("room {} is already booked for selected dates", roomId);
             throw new IllegalArgumentException(
                     "Room is already booked for selected dates"
             );
@@ -153,6 +151,10 @@ public class ReservationService {
         }
 
         if (requestedGuests > maxCapacity) {
+            logger.error(
+                    "customer tried to book {} guests in room {} that can accommodate a maximum of {} guests",
+                    requestedGuests, room.getId(), maxCapacity
+            );
             throw new IllegalArgumentException(
                     "This room can accommodate a maximum of " + maxCapacity + " guests."
             );
@@ -171,6 +173,7 @@ public class ReservationService {
         BigDecimal extraBedPricePerDay = BigDecimal.ZERO;
 
         if (guests > room.getMaxGuests()) {
+            logger.info("add price for extra bed per day");
             extraBedPricePerDay = BigDecimal.valueOf(500);
         }
 
@@ -181,8 +184,10 @@ public class ReservationService {
 
         if (checkIn.getMonthValue() >= 6 && checkIn.getMonthValue() <= 8) {
 
+            logger.info("Add high season price");
             extraPriceForHighSeason = BigDecimal.valueOf(1.3);
         }
+        logger.info("total price is calculated.");
         return (roomPricePerDay
                 .add(extraBedPricePerDay)
                 .multiply(extraPriceForHighSeason)
@@ -195,6 +200,7 @@ public class ReservationService {
         Reservation reservation = getReservationById(reservationId);
 
         if (!reservation.getCustomerId().equals(customerId)) {
+            logger.error("Customer {} tried to cancel reservation for customer {}", customerId, reservation.getCustomerId());
             throw new ForbiddenException("You cannot cancel another customer's reservation");
         }
 
@@ -202,13 +208,17 @@ public class ReservationService {
                 ReservationStatus.CANCELED
         );
 
+        logger.info("Reservation with id {} is cancelled", reservationId);
         return reservationRepository.save(reservation);
     }
 
     public Reservation getReservationById(Long reservationId) {
         return reservationRepository.findById(reservationId)
                 .orElseThrow(
-                        () -> new NotFoundException("Reservation finns inte")
+                        () -> {
+                            logger.error("Reservation with id {} does not exist", reservationId);
+                            return new NotFoundException("Reservation does not exist");
+                        }
                 );
     }
 
@@ -217,6 +227,9 @@ public class ReservationService {
         Reservation reservation = getReservationById(reservationId);
 
         if (!reservation.getCustomerId().equals(customerId)){
+            logger.error("Customer {} tried to update customer {} reservation with id {}",
+                    customerId, reservation.getCustomerId(), reservationId
+            );
             throw new ForbiddenException("You cannot update another customer's reservation");
         }
 
@@ -238,6 +251,7 @@ public class ReservationService {
                 )
         );
 
+        logger.info("Reservation with id {} is updated", reservationId);
         return reservationRepository.save(reservation);
     }
 
@@ -245,6 +259,7 @@ public class ReservationService {
     public List<Room> getAvailableRooms(LocalDate checkIn, LocalDate checkOut, int guests) {
         validateDateRange(checkIn, checkOut);
 
+        logger.info("Getting available rooms.");
         return roomService.getAllRooms()
                 .stream()
                 .filter(
@@ -276,6 +291,7 @@ public class ReservationService {
     }
 
     public boolean hasActiveReservation (Long customerId){
+        logger.info("Getting if customer with id {} have active reservations", customerId);
         return reservationRepository.existsByCustomerIdAndStatus (customerId, ReservationStatus.ACTIVE);
     }
 }

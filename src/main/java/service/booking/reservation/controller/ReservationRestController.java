@@ -3,20 +3,16 @@ package service.booking.reservation.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 import service.booking.reservation.model.CreateReservationRequest;
 import service.booking.reservation.model.Reservation;
 import service.booking.reservation.model.UpdateReservationRequest;
 import service.booking.reservation.model.dto.GetAllCustomerReservationsDto;
 import service.booking.reservation.service.ReservationService;
-import service.booking.reviewapi.client.ReviewClient;
-import service.booking.reviewapi.dto.ReviewResponseDto;
 import service.booking.roomapi.entity.Room;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,7 +27,8 @@ public class ReservationRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@Valid @RequestBody CreateReservationRequest request, @AuthenticationPrincipal Long userId, @RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<Reservation> createReservation(@Valid @RequestBody CreateReservationRequest request, @AuthenticationPrincipal Long userId,
+                                                         @RequestHeader("Authorization") String jwt) {
         request.setCustomerId(userId);
         Reservation createReservation = reservationService.createReservation(request, jwt);
 
