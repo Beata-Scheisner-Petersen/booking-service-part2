@@ -37,7 +37,7 @@ public class JwtService {
             return true;
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
             System.err.println("JWT Token has expired: " + e.getMessage());
-            logger.error("JWT-token has expired");
+            logger.error("JWT-token is expired");
             return false;
         } catch (io.jsonwebtoken.JwtException e) {
             System.err.println("Invalid JWT Token: " + e.getMessage());
