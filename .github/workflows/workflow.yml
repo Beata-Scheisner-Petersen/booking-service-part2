@@ -86,3 +86,8 @@ jobs:
       - name: Stop Containers and Cleanup
         if: always()
         run: docker compose down -v
+
+      - name: Deployment to railway
+        run: npx -y @railway/cli@latest redeploy --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" --yes
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_BOOKING }}

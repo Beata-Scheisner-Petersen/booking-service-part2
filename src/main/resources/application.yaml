@@ -25,10 +25,10 @@ server:
 
 
 management:
-  endpoints:
-    web:
-      exposure:
-        include: health
   endpoint:
     health:
-      show-details: never
+      show-details: always
+      group:
+        customer-check:
+          include: customerService
+          show-details: always
