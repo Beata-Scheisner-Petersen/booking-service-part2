@@ -1,10 +1,9 @@
 async function login() {
-
-    //Values from Input
+    // Values from Input
     const email = document.getElementById("email_input").value;
     const password = document.getElementById("password_input").value;
 
-    //Clear old errors
+    // Clear old errors
     document.getElementById("error_message").innerText = "";
 
     const response = await fetch("/connect/login", {
@@ -15,7 +14,7 @@ async function login() {
 
     const rawValue = await response.text();
 
-    //Parsing between text and json
+    // Parsing between text and JSON
     let data;
     try {
         data = JSON.parse(rawValue);
@@ -24,7 +23,7 @@ async function login() {
     }
 
     if (response.ok) {
-        localStorage.setItem("jwt", data)
+        localStorage.setItem("jwt", data);
         window.location.href = "/mypage";
         return;
     }
@@ -34,21 +33,13 @@ async function login() {
         return;
     }
 
-    if (response.status === 400) {
-       document.getElementById("error_message").innerText = "Wrong email or password, try again"
+    if (response.status === 401 || response.status === 404) {
+        document.getElementById("error_message").innerText = "Wrong email or password, try again";
         return;
     }
 
-    if (!response.ok) {
-        document.getElementById("error_message").innerText = data.error || "Unexpected error occur";
-    }
-
-    try {
-        const errorData = JSON.parse(data);
-        document.getElementById("error_message").innerText = errorData.error;
-    } catch {
-        document.getElementById("error_message").innerText = "unexpected error: " + data;
-    }
+    const errorMessage = (typeof data === 'object' && data.error) ? data.error : data;
+    document.getElementById("error_message").innerText = errorMessage || "Unexpected error occurred";
 }
 
 async function registerNewCustomer() {

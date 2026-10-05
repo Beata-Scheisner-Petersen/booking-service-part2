@@ -27,7 +27,7 @@ public class CustomerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginCustomerDto dto) {
+    public ResponseEntity<String> login(@RequestBody LoginCustomerDto dto) {
         return customerClient.login(dto);
     }
 
