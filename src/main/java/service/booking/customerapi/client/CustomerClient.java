@@ -54,11 +54,11 @@ public class CustomerClient {
     }
 
     public boolean customerExists(String token) {
-            return Boolean.TRUE.equals(restClient.get()
-                    .uri("/api/customers/does-customer-exist")
-                    .header("Authorization", formatBearerToken(token))
-                    .retrieve()
-                    .body(Boolean.class));
+        return Boolean.TRUE.equals(restClient.get()
+                .uri("/api/customers/does-customer-exist")
+                .header("Authorization", formatBearerToken(token))
+                .retrieve()
+                .body(Boolean.class));
     }
 
     public ResponseEntity<Object> deleteAccount(String token) {
@@ -67,6 +67,13 @@ public class CustomerClient {
                 .header("Authorization", formatBearerToken(token))
                 .retrieve()
                 .toEntity(Object.class);
+    }
+
+    public void getHealth() {
+        restClient.get()
+                .uri("/actuator/health")
+                .retrieve()
+                .toBodilessEntity();
     }
 
     private String formatBearerToken(String token) {
