@@ -59,6 +59,11 @@ jobs:
       - name: Build application
         run: mvn -B package -DskipTests
 
+      - name: Stop Containers and Cleanup
+        if: always()
+        run: docker compose down -v
+      
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -71,23 +76,46 @@ jobs:
               username: ${{secrets.DOCKER_HUB_USER}}
               password: ${{secrets.DOCKER_HUB_TOKEN}}
 
-
-
-      - name: Build and push Docker image
+    #DOCKER IMAGE BUILD AND PUSH
+      - name: Build and push Docker image for Staging
+        if: github.event_name == 'pull_request'
         run: |
           docker buildx build \
-          --platform linux/amd64,linux/arm64 \
-           -t beatasp/booking-image:${{github.run_number}} \
-           -t beatasp/booking-image:latest \
-          --push .
+            --platform linux/amd64,linux/arm64 \
+            -t beatasp/booking-image:staging-${{ github.run_number }}
+            --push .
 
-      
+      - name: Build and push Docker image for Production
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            beatasp/booking-image:production-${{ github.run_number }} \
+            --push .
 
-      - name: Stop Containers and Cleanup
-        if: always()
-        run: docker compose down -v
 
-      - name: Deployment to railway
+    #DEPLOYMENT
+
+      - name: Set Staging Docker Image
+        if: github.event_name == 'pull_request'
+        run: |
+          npx -y @railway/cli@latest service source connect \
+            --image beatasp/booking-image:staging-${{ github.run_number }} \
+            --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
+
+      # Deployment Staging
+
+      - name: Deploy to Railway Staging
+        if: github.event_name == 'pull_request'
         run: npx -y @railway/cli@latest redeploy --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" --yes
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_BOOKING }}
+            RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING
+
+      # Deployment Production
+      - name: Deploy to Railway Production
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx -y @railway/cli@latest redeploy --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" --yes
+        env:
+                RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_BOOKING }}
