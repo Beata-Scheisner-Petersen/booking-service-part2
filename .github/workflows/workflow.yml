@@ -6,11 +6,19 @@ on:
   pull_request:
     branches: [ "master" ]
 
+  workflow_dispatch:
+    inputs:
+      image_version:
+        description: 'Docker image version tested in staging'
+        required: true
+        type: string
+
 jobs:
+  # Runs on Pull Request and push to master
+  # Does NOT run when Production is triggered manually
   build_and_test:
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout repository
@@ -23,6 +31,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      # TEST ENVIRONMENT
+      # =====================================================
       - name: Start Docker Compose Stack
         run: docker compose up -d
         env:
@@ -59,6 +69,22 @@ jobs:
       - name: Build application
         run: mvn -B package -DskipTests
 
+      - name: Stop Containers and Cleanup
+        if: always()
+        run: docker compose down -v
+
+  # =====================================================
+  # BUILD DOCKER IMAGE ONCE
+  # Only after merge / push to master
+  build_docker_image:
+    needs: build_and_test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -68,26 +94,43 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-              username: ${{secrets.DOCKER_HUB_USER}}
-              password: ${{secrets.DOCKER_HUB_TOKEN}}
-
-
+          username: ${{secrets.DOCKER_HUB_USER}}
+          password: ${{secrets.DOCKER_HUB_TOKEN}}
 
       - name: Build and push Docker image
         run: |
           docker buildx build \
-          --platform linux/amd64,linux/arm64 \
-           -t beatasp/booking-image:${{github.run_number}} \
-           -t beatasp/booking-image:latest \
-          --push .
+            --platform linux/amd64,linux/arm64 \
+            -t beatasp/booking-image:${{ github.run_number }} \
+            -t beatasp/booking-image:latest \
+            --push .
+        
+      - name: Show Docker image version
+        run: |
+          echo "Docker image tag: ${{ github.run_number }}"
 
-      
+  # STAGING
+  # Uses the exact image built above
+  # Deployment Staging
+  deploy_staging:
+    needs: build_docker_image
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
 
-      - name: Stop Containers and Cleanup
-        if: always()
-        run: docker compose down -v
+    steps:
+      - name: Deploy to Railway Staging
 
-      - name: Deployment to railway
+        run: npx -y @railway/cli@latest redeploy --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" --yes
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
+
+
+  deploy_production:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      # Deployment Production
+      - name: Deploy to Railway Production
         run: npx -y @railway/cli@latest redeploy --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" --yes
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_BOOKING }}
