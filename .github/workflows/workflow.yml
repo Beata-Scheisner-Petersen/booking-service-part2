@@ -62,7 +62,7 @@ jobs:
       - name: Stop Containers and Cleanup
         if: always()
         run: docker compose down -v
-      
+
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -111,7 +111,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: npx -y @railway/cli@latest redeploy --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" --yes
         env:
-            RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING
+            RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
 
       # Deployment Production
       - name: Deploy to Railway Production
