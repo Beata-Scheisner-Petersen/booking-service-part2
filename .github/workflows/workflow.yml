@@ -102,16 +102,16 @@ jobs:
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
             -t beatasp/booking-image:${{ github.run_number }} \
+            -t beatasp/booking-image:latest \
             --push .
         
       - name: Show Docker image version
         run: |
-          echo "Docker image: beatasp/booking-image:${{ github.run_number }}"
+          echo "Docker image tag: ${{ github.run_number }}"
 
-    # STAGING
-      # Uses the exact image built above
-      # Deployment Staging
-
+  # STAGING
+  # Uses the exact image built above
+  # Deployment Staging
   deploy_staging:
     needs: build_docker_image
 #    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -119,6 +119,7 @@ jobs:
 
     steps:
       - name: Deploy to Railway Staging
+
         run: npx -y @railway/cli@latest redeploy --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" --yes
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
