@@ -95,15 +95,15 @@ jobs:
 
 
     #DEPLOYMENT
-
-      - name: Set Staging Docker Image
-        if: github.event_name == 'pull_request'
-        run: |
-          npx -y @railway/cli@latest service source connect \
-            --image beatasp/booking-image:staging-${{ github.run_number }} \
-            --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}"
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
+#
+#      - name: Set Staging Docker Image
+#        if: github.event_name == 'pull_request'
+#        run: |
+#          npx -y @railway/cli@latest service source connect \
+#            --image beatasp/booking-image:staging-${{ github.run_number }} \
+#            --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}"
+#        env:
+#          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
 
       # Deployment Staging
 
