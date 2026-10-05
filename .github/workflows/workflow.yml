@@ -82,7 +82,7 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
-            -t beatasp/booking-image:staging-${{ github.run_number }}
+            -t beatasp/booking-image:staging-${{ github.run_number }} \
             --push .
 
       - name: Build and push Docker image for Production
