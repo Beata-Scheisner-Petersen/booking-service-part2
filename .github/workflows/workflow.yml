@@ -125,7 +125,7 @@ jobs:
 #          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
 
       - name: Set image to Railway Staging
-        run: npx -y @railway/cli@latest environment edit --environment staging --service-config ${{ secrets.RAILWAY_SERVICE_ID_BOOKING }} source.image "beatasp/booking-image:${{ github.run_number }}" --yes
+        run: npx -y @railway/cli@latest environment edit --environment staging --yes --service-config ${{ secrets.RAILWAY_SERVICE_ID_BOOKING }} source.image "beatasp/booking-image:${{ github.run_number }}"
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
 
