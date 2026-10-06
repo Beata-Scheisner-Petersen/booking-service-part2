@@ -114,5 +114,4 @@ public class GlobalExceptionHandler {
                 """,response.getStatusCode(), response.getBody()
         );
     }
-
 }
