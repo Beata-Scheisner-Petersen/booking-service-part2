@@ -144,7 +144,7 @@ jobs:
     steps:
       # Deployment Production
       - name: Set image to Railway Production
-        run: npx -y @railway/cli@latest environment edit --environment production --service-config ${{ secrets.RAILWAY_BOOKING_SERVICE_ID_PRODUCTION }} source.image "beatasp/booking-image:${{ inputs.image_version }}"
+        run: npx -y @railway/cli@latest environment edit --environment production --service-config ${{ secrets.RAILWAY_BOOKING_SERVICE_ID_PRODUCTION }} source.image "beatasp/booking-image:${{ github.event.inputs.image_version }}"
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PRODUCTION }}
 
