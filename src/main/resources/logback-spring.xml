@@ -1,7 +1,7 @@
 <configuration>
 
     <appender name="DAILY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>C:/Dev/Skola/Devops/Assignment/del2/booking-service-part2/logs/application.log</file>
+        <file>/data/logs/application.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Skapar en ny fil varje dag -->
@@ -16,7 +16,7 @@
         </encoder>
     </appender>
 
-    <root level="INFO">
+    <root level="WARNING">
         <appender-ref ref="DAILY_FILE" />
     </root>
 
