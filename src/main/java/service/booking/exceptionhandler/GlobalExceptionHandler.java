@@ -121,4 +121,13 @@ public class GlobalExceptionHandler {
                 .body(e.getMessage());
     }
 
+    private void printLoggingWarning(ResponseEntity<?> response) {
+        logger.warn("""
+                GlobalExceptionHandler: handleValidationError
+                Status: {}
+                Message: {}
+                """,response.getStatusCode(), response.getBody()
+        );
+    }
+
 }
