@@ -26,6 +26,7 @@ public class CustomerService {
             logger.warn("Customer with id: {}, tried to delete the account while having active bookings", userId);
             throw new HaveReservationException("You can't delete your account while having active bookings");
         }
+        logger.info("account with id: {} is deleted", userId);
 
         return customerClient.deleteAccount(jwt);
     }
