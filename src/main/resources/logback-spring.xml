@@ -1,7 +1,7 @@
 <configuration>
 
     <appender name="DAILY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/application.log</file>
+        <file>/data/logs/application.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Skapar en ny fil varje dag -->
