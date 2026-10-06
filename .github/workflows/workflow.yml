@@ -129,8 +129,20 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      # Deployment Production
-      - name: Deploy to Railway Production
-        run: npx -y @railway/cli@latest redeploy --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" --yes
+      - name: Set image to Railway Staging
+        run: npx -y @railway/cli@latest environment edit \
+          --environment staging \
+          --image "beatasp/booking-image:${{ inputs.image_version }}" \
+          --service-config "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" \
+          source.image "beatasp/booking-image:68"
+          --yes
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_BOOKING }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
+
+      - name: Deploy to Railway Staging
+        run: |
+          npx -y @railway/cli@latest redeploy \
+            --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" \
+            --yes
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
