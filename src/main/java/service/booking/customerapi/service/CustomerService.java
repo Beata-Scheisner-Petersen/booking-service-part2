@@ -23,7 +23,7 @@ public class CustomerService {
 
     public ResponseEntity<Object> deleteAccount(Long userId, @RequestHeader("Authorization") String jwt) {
         if(reservationService.hasActiveReservation(userId)) {
-            logger.error("Customer with id: {}, tried to delete the account while having active bookings", userId);
+            logger.warn("Customer with id: {}, tried to delete the account while having active bookings", userId);
             throw new HaveReservationException("You can't delete your account while having active bookings");
         }
 
