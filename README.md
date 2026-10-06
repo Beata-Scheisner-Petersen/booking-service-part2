@@ -1,5 +1,30 @@
 # Booking System
 
+---
+## Workflow
+
+### Branch Strategy
+- We have made use of GitHub Flow, where you always merge back into master/main, 
+because for us as a very small team that makes more sense than having lots of different
+branches to keep track of.
+
+### Branch -> Production
+- Our project path goes like this.
+1. **master** → (new) **branch**
+2. **branch** (changes) → PR into **master**
+3. PR triggers **GitHub Actions** and builds/tests/push the **image** to **staging**
+4. After having used **staging** for testing, the workflow "**workflow_dispatch**" is manually triggered inside GitHub Actions, 
+causing it to push the already pre-built **image** to **Production**.
+
+### Railway Links
+
+- **Staging** - https://booking-image-staging.up.railway.app/
+- **Production** - https://booking-image-production.up.railway.app/
+
+
+---
+
+
 A microservice-based hotel booking application built with Spring Boot.
 
 The system consists of three services:
