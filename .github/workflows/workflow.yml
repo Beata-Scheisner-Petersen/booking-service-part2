@@ -36,10 +36,10 @@ jobs:
       - name: Start Docker Compose Stack
         run: docker compose up -d
         env:
-#          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-#          BOOKING_DB_ROOT_PASS: ${{ secrets.BOOKING_DB_ROOT_PASS }}
-#          BOOKING_DB_USER: ${{ secrets.BOOKING_DB_USER }}
-#          BOOKING_DB_PASS: ${{ secrets.BOOKING_DB_PASS }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          BOOKING_DB_ROOT_PASS: ${{ secrets.BOOKING_DB_ROOT_PASS }}
+          BOOKING_DB_USER: ${{ secrets.BOOKING_DB_USER }}
+          BOOKING_DB_PASS: ${{ secrets.BOOKING_DB_PASS }}
 
           CUSTOMER_DB_ROOT_PASS: ${{ secrets.CUSTOMER_DB_ROOT_PASS }}
           CUSTOMER_DB_PASS: ${{ secrets.CUSTOMER_DB_PASS }}
