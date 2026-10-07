@@ -29,6 +29,9 @@ causing it to push the already pre-built **image** to **Production**.
 3. We made PR's and merged one, resulting in the 2nd one getting a conflict.
 4. We solved it by using Accept Both, making both changes get accepted into the file.
 
+### Rollback
+- To do a Rollback you must enter your published Railway staging/production settings and edit the "**source image**" to desired version.
+
 ---
 
 
