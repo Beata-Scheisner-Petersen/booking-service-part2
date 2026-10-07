@@ -110,7 +110,7 @@ public class ReservationService {
                 request.getGuests()
         );
 
-        logger.info("Reservation is created");
+        logger.info("Reservation on room {} at date {}-{} is created", request.getRoomId(), request.getCheckIn(), request.getCheckOut());
         return reservationRepository.save(reservation);
     }
 
@@ -136,7 +136,7 @@ public class ReservationService {
             ;
         }
         if (!bookings.isEmpty()) {
-            logger.error("room {} is already booked for selected dates", roomId);
+            logger.error("room {} is already booked for selected date {}-{}", roomId, checkIn, checkOut);
             throw new IllegalArgumentException(
                     "Room is already booked for selected dates"
             );
