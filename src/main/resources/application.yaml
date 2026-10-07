@@ -33,3 +33,9 @@ management:
         customer-check:
           include: customerService
           show-details: always
+
+logging:
+  level:
+    root: info
+    se:
+      minimap: info
