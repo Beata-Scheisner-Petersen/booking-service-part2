@@ -1,5 +1,37 @@
 # Booking System
 
+---
+## Workflow
+
+### Branch Strategy
+- We have made use of GitHub Flow, where you always merge back into master/main, 
+because for us as a very small team that makes more sense than having lots of different
+branches to keep track of.
+
+### Branch -> Production
+- Our project path goes like this.
+1. **master** → (new) **branch**
+2. **branch** (changes) → PR into **master**
+3. PR/Merge triggers **GitHub Actions** and automaticly builds/tests/push the **image** to **staging**
+4. After having used **staging** for testing, the workflow "**workflow_dispatch**" is manually triggered inside GitHub Actions, 
+causing it to push the already pre-built **image** to **Production**.
+
+### Railway Links
+
+- **Staging** - https://booking-image-staging.up.railway.app/
+- **Production** - https://booking-image-production.up.railway.app/
+
+### Merge Conflict - PR #39
+
+- We had to **Simulate** a merge conflict, because we did not get one naturally.
+1. Anyway we used a text file from master, 2 of us created branches from master.
+2. Then both of us edited the file.
+3. We made PR's and merged one, resulting in the 2nd one getting a conflict.
+4. We solved it by using Accept Both, making both changes get accepted into the file.
+
+---
+
+
 A microservice-based hotel booking application built with Spring Boot.
 
 The system consists of three services:
