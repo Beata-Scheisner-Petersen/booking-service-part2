@@ -37,72 +37,150 @@ public class GlobalExceptionHandler {
                                 error.getDefaultMessage()
                         )
                 );
-        var response = ResponseEntity.badRequest().body(errors);
-        printLoggingWarning(response, "handleValidationError");
+        var response = ResponseEntity
+                .badRequest()
+                .body(
+                        errors
+                );
+        printLoggingWarning(
+                response,
+                "handleValidationError"
+        );
         return response;
     }
 
     @ExceptionHandler(AlreadyExistException.class)
     public ResponseEntity<String> handleUsernameExists(AlreadyExistException exception) {
-       var response = ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
-        printLoggingWarning(response, "handleUsernameExists");
+       var response = ResponseEntity
+               .status(
+                       HttpStatus.CONFLICT
+               ).body(
+                       exception.getMessage()
+               );
+        printLoggingWarning(
+                response,
+                "handleUsernameExists"
+        );
         return response;
     }
 
     @ExceptionHandler(WrongEmailOrPasswordException.class)
     public ResponseEntity<String> handleWrongEmailOrPassword(WrongEmailOrPasswordException exception) {
-        var response = ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
-        printLoggingWarning(response,"handleWrongEmailOrPassword");
+        var response = ResponseEntity
+                .status(
+                        HttpStatus.CONFLICT
+                ).body(
+                        exception.getMessage()
+                );
+        printLoggingWarning(
+                response,
+                "handleWrongEmailOrPassword"
+        );
         return response;
     }
 
     @ExceptionHandler(HaveReservationException.class)
     public ResponseEntity<String> haveReservation(HaveReservationException exception) {
-        var response = ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
-        printLoggingWarning(response, "haveReservation");
+        var response = ResponseEntity
+                .status(
+                        HttpStatus.CONFLICT
+                ).body(
+                        exception.getMessage()
+                );
+        printLoggingWarning(
+                response,
+                "haveReservation"
+        );
         return response;
     }
 
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException exception) {
-        var response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
-        printLoggingWarning(response, "handleIllegalArgument");
+        var response = ResponseEntity
+                .status(
+                        HttpStatus.BAD_REQUEST
+                ).body(
+                        exception.getMessage()
+                );
+        printLoggingWarning(
+                response,
+                "handleIllegalArgument"
+        );
         return response;
     }
 
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<String> handleForbiddenException(ForbiddenException exception) {
-        var response = ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
-        printLoggingWarning(response, "handleForbiddenException");
+        var response = ResponseEntity
+                .status(
+                        HttpStatus.FORBIDDEN
+                ).body(
+                        exception.getMessage()
+                );
+        printLoggingWarning(
+                response,
+                "handleForbiddenException"
+        );
         return response;
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException exception) {
-        var response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        printLoggingWarning(response, "handleNotFoundException");
+        var response = ResponseEntity
+                .status(
+                        HttpStatus.NOT_FOUND
+                ).body(
+                        exception.getMessage()
+                );
+        printLoggingWarning(
+                response,
+                "handleNotFoundException"
+        );
         return response;
     }
 
     @ExceptionHandler(ExternalServiceConnectionException.class)
     public ResponseEntity<String> externalServiceConnectionException(ExternalServiceConnectionException exception) {
-        var response = ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(exception.getMessage());
-        printLoggingWarning(response, "externalServiceConnectionException");
+        var response = ResponseEntity
+                .status(
+                        HttpStatus.SERVICE_UNAVAILABLE
+                ).body(
+                        exception.getMessage()
+                );
+        printLoggingWarning(
+                response,
+                "externalServiceConnectionException");
         return response;
     }
 
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<String> handleHttpClientError(HttpClientErrorException exception) {
-        var response = ResponseEntity.status(exception.getStatusCode()).body(exception.getResponseBodyAsString());
-        printLoggingWarning(response, "handleHttpClientError");
+        var response = ResponseEntity
+                .status(
+                        exception.getStatusCode()
+                ).body(
+                        exception.getResponseBodyAsString()
+                );
+        printLoggingWarning(
+                response,
+                "handleHttpClientError"
+        );
         return response;
     }
 
     @ExceptionHandler(ResourceAccessException.class)
     public ResponseEntity<String> handleResourceAccess(ResourceAccessException exception) {
-        var response = ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(exception.getMessage());
-        printLoggingWarning(response, "handleResourceAccess");
+        var response = ResponseEntity
+                .status(
+                        HttpStatus.SERVICE_UNAVAILABLE
+                ).body(
+                        exception.getMessage()
+                );
+        printLoggingWarning(
+                response,
+                "handleResourceAccess"
+        );
         return response;
     }
 
