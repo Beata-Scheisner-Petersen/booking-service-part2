@@ -36,10 +36,10 @@ jobs:
       - name: Start Docker Compose Stack
         run: docker compose up -d
         env:
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          BOOKING_DB_ROOT_PASS: ${{ secrets.BOOKING_DB_ROOT_PASS }}
-          BOOKING_DB_USER: ${{ secrets.BOOKING_DB_USER }}
-          BOOKING_DB_PASS: ${{ secrets.BOOKING_DB_PASS }}
+#          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+#          BOOKING_DB_ROOT_PASS: ${{ secrets.BOOKING_DB_ROOT_PASS }}
+#          BOOKING_DB_USER: ${{ secrets.BOOKING_DB_USER }}
+#          BOOKING_DB_PASS: ${{ secrets.BOOKING_DB_PASS }}
 
           CUSTOMER_DB_ROOT_PASS: ${{ secrets.CUSTOMER_DB_ROOT_PASS }}
           CUSTOMER_DB_PASS: ${{ secrets.CUSTOMER_DB_PASS }}
@@ -102,7 +102,7 @@ jobs:
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
             -t beatasp/booking-image:${{ github.run_number }} \
-            -t beatasp/booking-image:latest \
+#            -t beatasp/booking-image:latest \
             --push .
         
       - name: Show Docker image version
