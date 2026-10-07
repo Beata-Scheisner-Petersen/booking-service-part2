@@ -118,24 +118,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set image to Railway Staging
+        run: echo '{"services":{"${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}":{"source":{"image":"beatasp/booking-image:${{ github.run_number }}"}}}}' \
+          | npx -y @railway/cli environment edit --environment staging
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
+
 #      - name: Deploy to Railway Staging
-#
-#        run: npx -y @railway/cli@latest redeploy --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" --yes
+#        run: |
+#          npx -y @railway/cli@latest redeploy \
+#            --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" \
+#            --yes
 #        env:
 #          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
-
-      - name: Set image to Railway Staging
-        run: npx -y @railway/cli@latest environment edit --environment staging --service-config ${{ secrets.RAILWAY_SERVICE_ID_BOOKING }} source.image "beatasp/booking-image:${{ github.run_number }}"
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
-
-      - name: Deploy to Railway Staging
-        run: |
-          npx -y @railway/cli@latest redeploy \
-            --service "${{ secrets.RAILWAY_SERVICE_ID_BOOKING }}" \
-            --yes
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
 
 
   deploy_production:
@@ -144,14 +139,15 @@ jobs:
     steps:
       # Deployment Production
       - name: Set image to Railway Production
-        run: npx -y @railway/cli@latest environment edit --environment production --service-config ${{ secrets.RAILWAY_BOOKING_SERVICE_ID_PRODUCTION }} source.image "beatasp/booking-image:${{ github.event.inputs.image_version }}"
+        run: echo '{"services":{"${{ secrets.RAILWAY_BOOKING_SERVICE_ID_PRODUCTION }}":{"source":{"image":"beatasp/booking-image:${{ github.event.inputs.image_version }}"}}}}' \
+          | npx -y @railway/cli environment edit --environment production
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PRODUCTION }}
 
-      - name: Deploy to Railway Production
-        run: |
-          npx -y @railway/cli@latest redeploy \
-            --service "${{ secrets.RAILWAY_BOOKING_SERVICE_ID_PRODUCTION }}" \
-            --yes
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PRODUCTION }}
+#      - name: Deploy to Railway Production
+#        run: |
+#          npx -y @railway/cli@latest redeploy \
+#            --service "${{ secrets.RAILWAY_BOOKING_SERVICE_ID_PRODUCTION }}" \
+#            --yes
+#        env:
+#          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PRODUCTION }}
