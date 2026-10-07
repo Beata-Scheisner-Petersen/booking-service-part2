@@ -21,6 +21,12 @@ causing it to push the already pre-built **image** to **Production**.
 - **Staging** - https://booking-image-staging.up.railway.app/
 - **Production** - https://booking-image-production.up.railway.app/
 
+### Merge Conflict
+
+- We had to **Simulate** a merge conflict, because we did not get one naturally.
+Anyway
+
+** #39 
 
 ---
 
