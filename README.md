@@ -12,7 +12,7 @@ branches to keep track of.
 - Our project path goes like this.
 1. **master** → (new) **branch**
 2. **branch** (changes) → PR into **master**
-3. PR triggers **GitHub Actions** and builds/tests/push the **image** to **staging**
+3. PR/Merge triggers **GitHub Actions** and automaticly builds/tests/push the **image** to **staging**
 4. After having used **staging** for testing, the workflow "**workflow_dispatch**" is manually triggered inside GitHub Actions, 
 causing it to push the already pre-built **image** to **Production**.
 
